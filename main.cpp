@@ -88,14 +88,10 @@ int main() {
 		// angle of rotation
 		float theta_rot = 0.f;
 
-		if (m_y < r_y && m_x > r_x)		    // quadrant 1
-		    theta_rot = -90.f + theta;
-		else if (m_y < r_y && m_x < r_x)	// quadrant 2
-		    theta_rot = theta - 90.f;
-		else if (m_y > r_y && m_x < r_x)	// quadrant 3
-		    theta_rot = theta + 90.f;
-		else if (m_y > r_y && m_x > r_x) 	// quadrant 4
-		    theta_rot = theta + 90.f;
+		if ((m_y < r_y && m_x > r_x) || (m_y > r_y && m_x > r_x))     // quadrant 1 or 4
+		    theta_rot = theta;
+		else
+			theta_rot = theta + 180.f;
 
 		player.setRotation(theta_rot);
 

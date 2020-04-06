@@ -1,3 +1,3 @@
-main.o: ../main.cpp ../Projectile.h
+main.o: ../main.cpp ../Game.h
 
-../Projectile.h:
+../Game.h:

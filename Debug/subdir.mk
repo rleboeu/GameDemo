@@ -4,14 +4,20 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../Game.cpp \
+../Player.cpp \
 ../Projectile.cpp \
 ../main.cpp 
 
 OBJS += \
+./Game.o \
+./Player.o \
 ./Projectile.o \
 ./main.o 
 
 CPP_DEPS += \
+./Game.d \
+./Player.d \
 ./Projectile.d \
 ./main.d 
 

@@ -11,6 +11,8 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
+#include "Game.h"
+
 class Projectile
 {
 public:
@@ -24,7 +26,7 @@ public:
 	float maxSpeed;
 
 	void setMaxSpeed(float);
-	bool checkBounds(sf::Window&);
+	bool checkBounds();
 	sf::Sprite getBullet();
 	void update();
 

@@ -17,6 +17,7 @@ Projectile::Projectile() {
 Projectile::Projectile(sf::Sprite& reference, sf::Vector2f& aimDirNorm) {
 	bulletTexture.loadFromFile("Resources/Textures/bullet.png");
 	bullet.setTexture(bulletTexture);
+	bullet.setColor(sf::Color::Yellow);
 	bullet.scale(2.0, 1.5);
 
 	bullet.setOrigin(sf::Vector2f(bullet.getLocalBounds().width / 2, bullet.getLocalBounds().height / 2));
@@ -38,12 +39,12 @@ void Projectile::setMaxSpeed(float s) {
 	speed *= maxSpeed;
 }
 
-bool Projectile::checkBounds(sf::Window& window) {
+bool Projectile::checkBounds() {
 	if (bullet.getPosition().x <= 0 || bullet.getPosition().y <= 0) {
 		return false;
 	}
 
-	if (bullet.getPosition().x >= window.getSize().x || bullet.getPosition().y >= window.getSize().y) {
+	if (bullet.getPosition().x >= Game::WIDTH || bullet.getPosition().y >= Game::HEIGHT) {
 		return false;
 	}
 

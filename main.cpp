@@ -1,30 +1,33 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 #include "Projectile.h"
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1600, 900), "Game Window", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "boxxxy", sf::Style::Default);
 	window.setFramerateLimit(60);
-
-	sf::Sprite s;
-
-	std::cout << "Program initialized." << std::endl;
 
 	sf::Texture boxTexture;
 	boxTexture.loadFromFile("Resources/Textures/box.png");
 
 	sf::Sprite player;
 	player.setTexture(boxTexture);
-	player.setOrigin(100, 100);
+	player.setOrigin(player.getGlobalBounds().width / 2, player.getGlobalBounds().height / 2);
 	player.setPosition((float)(window.getSize().x / 2), (float)(window.getSize().y / 2));
 	player.scale(0.5, 0.5);
 
     float playerSpeed = 6.0f;
+    sf::Vector2f playerCenter = player.getPosition();
+    sf::Vector2f aimDir, aimDirNorm;
+    sf::Vector2f mousePosWindow;
+    int shootTimer = 10;
 
     float m_x = 0.f;
     float m_y = 0.f;
+
+    std::vector<Projectile> playerBullets;
 
 	while (window.isOpen()) {
 
@@ -76,7 +79,18 @@ int main() {
 		        player.move(0, playerSpeed);
 		}
 
-		// rectangle rotation follows mouse
+		if (shootTimer < 10)
+			shootTimer++;
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && shootTimer >= 10) {
+			Projectile p(player, aimDirNorm);
+			playerBullets.push_back(p);
+
+			shootTimer = 0;
+		}
+
+
+		// ROTATE PLAYER SPRITE TO FACE THE MOUSE
 		float r_x = player.getPosition().x;
 		float r_y = player.getPosition().y;
 
@@ -95,10 +109,31 @@ int main() {
 
 		player.setRotation(theta_rot);
 
-		//Projectile::SetDirection(rectangle);
+
+		// CALCULATE THE NORMAL VECTOR FOR THE DIRECTION OF THE BULLET
+		playerCenter = player.getPosition();
+		mousePosWindow = sf::Vector2f(sf::Mouse::getPosition(window));
+		aimDir = mousePosWindow - playerCenter;
+		aimDirNorm = aimDir / (float)(std::sqrt(std::pow(aimDir.x, 2) + std::pow(aimDir.y, 2)));
+
+
+
+		// DESTROY UNUSED BULLETS AND UPDATE BULLETS STILL TRAVELLING
+		for (size_t i = 0; i < playerBullets.size(); i++) {
+			if (playerBullets.at(i).checkBounds(window) == false) {
+				playerBullets.erase(playerBullets.begin() + i);
+			} else {
+				playerBullets.at(i).update();
+			}
+		}
 
 		// render
 		window.clear();
+
+		for (Projectile x : playerBullets) {
+			window.draw(x.getBullet());
+		}
+
 		window.draw(player);
 
 		// draw

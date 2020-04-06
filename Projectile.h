@@ -15,13 +15,22 @@ class Projectile
 {
 public:
 	Projectile();
+	Projectile(sf::Sprite&, sf::Vector2f&);
+	~Projectile();
 
-	sf::Texture BulletTexture;
-	static sf::Sprite Bullet;
+	sf::Texture bulletTexture;
 
-	static void SetDirection(sf::Sprite);
-	static void SetSpeed(float);
-	bool isFired;
+	sf::Vector2f speed;
+	float maxSpeed;
+
+	void setMaxSpeed(float);
+	bool checkBounds(sf::Window&);
+	sf::Sprite getBullet();
+	void update();
+
+private:
+	sf::Sprite bullet;
+
 };
 
 #endif /* PROJECTILE_H_ */

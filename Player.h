@@ -11,6 +11,8 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <vector>
+//#include <ctime>
+//#include <cstdlib>
 
 #include "Projectile.h"
 
@@ -19,9 +21,17 @@ public:
 	Player();
 	virtual ~Player();
 
+	bool isReloading;
+
 	sf::Sprite& getPlayerSprite();
 	float getPlayerSpeed();
 	std::vector<Projectile> getPlayerBullets();
+	std::string getMagazineReport();
+	int getCurrentMagazine();
+
+	bool isPlayerReloading();
+
+	void deleteBulletAt(int);
 
 	void followMouseTo(sf::Vector2f);
 	void moveLeft();
@@ -30,6 +40,8 @@ public:
 	void moveDown();
 
 	void shoot(sf::Vector2f);
+	void reload();
+
 	void update();
 
 
@@ -41,6 +53,8 @@ private:
 
 	int shootTimer;
 	int timeBetweenShots;
+	int magazineMax;
+	int magazineCurrent;
 
 	float playerSpeed;
 };

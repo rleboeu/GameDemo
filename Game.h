@@ -18,15 +18,24 @@ public:
 	Game();
 	virtual ~Game();
 
+	void start();
+	void initialize();
+
+	int getScore();
+	void setScore(int);
+	void incrementScore();
+
 	static const unsigned int WIDTH = 1280;
 	static const unsigned int HEIGHT = 720;
 
 private:
-	void start();
-	void initialize();
+
 	static sf::RenderWindow window;
 	sf::Font font;
 	sf::Text title;
+	sf::Text magazine;
+	int score;
+	sf::Text scoreLabel;
 };
 
 #endif /* GAME_H_ */

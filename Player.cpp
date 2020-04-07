@@ -14,11 +14,14 @@ Player::Player() {
 	playerSprite.setTexture(playerTexture);
 	playerSprite.setOrigin(playerSprite.getLocalBounds().width / 2, playerSprite.getLocalBounds().height / 2);
 	playerSprite.setPosition((float)(Game::WIDTH / 2), (float)(Game::HEIGHT / 2));
-	playerSprite.scale(0.5, 0.5);
+	playerSprite.scale(0.25, 0.25);
 
 	playerSpeed = 6.f;
 	shootTimer = 0;
-	timeBetweenShots = 5;
+	timeBetweenShots = 10;
+	magazineMax = 20;
+	magazineCurrent = magazineMax;
+	isReloading = false;
 }
 
 Player::~Player() {
@@ -35,6 +38,22 @@ float Player::getPlayerSpeed() {
 
 std::vector<Projectile> Player::getPlayerBullets() {
 	return playerBullets;
+}
+
+void Player::deleteBulletAt(int i) {
+	playerBullets.erase(playerBullets.begin() + i);
+}
+
+std::string Player::getMagazineReport() {
+	return std::to_string(magazineCurrent) + " / " + std::to_string(magazineMax);
+}
+
+int Player::getCurrentMagazine() {
+	return magazineCurrent;
+}
+
+bool Player::isPlayerReloading() {
+	return isReloading;
 }
 
 void Player::followMouseTo(sf::Vector2f mousePos) {
@@ -89,22 +108,28 @@ void Player::moveUp() {
 
 void Player::shoot(sf::Vector2f mousePosWindow) {
 
-	sf::Vector2f playerCenter = playerSprite.getPosition();
-	sf::Vector2f aimDir = mousePosWindow - playerCenter;
-	sf::Vector2f aimDirNorm = aimDir / (float)(std::sqrt(std::pow(aimDir.x, 2) + std::pow(aimDir.y, 2)));
+	if (magazineCurrent > 0) {
+		sf::Vector2f playerCenter = playerSprite.getPosition();
+		sf::Vector2f aimDir = mousePosWindow - playerCenter;
+		sf::Vector2f aimDirNorm = aimDir / (float)(std::sqrt(std::pow(aimDir.x, 2) + std::pow(aimDir.y, 2)));
 
-	if (shootTimer < timeBetweenShots)
-		shootTimer++;
+		if (shootTimer < timeBetweenShots)
+			shootTimer++;
 
-	if (shootTimer >= timeBetweenShots) {
-		Projectile p(playerSprite, aimDirNorm);
-		playerBullets.push_back(p);
-
-		shootTimer = 0;
+		if (shootTimer >= timeBetweenShots) {
+			Projectile p(playerSprite, aimDirNorm);
+			playerBullets.push_back(p);
+			magazineCurrent--;
+			shootTimer = 0;
+		}
+	} else {
+		isReloading = true;
 	}
 
+}
 
-
+void Player::reload() {
+	magazineCurrent = magazineMax;
 }
 
 void Player::update() {

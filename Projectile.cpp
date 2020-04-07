@@ -8,16 +8,19 @@
 #include "Projectile.h"
 
 Projectile::Projectile() {
-	bulletTexture.loadFromFile("Resources/Textures/bullet.png");
-	bullet.setTexture(bulletTexture);
+	//bulletTexture.loadFromFile("Resources/Textures/bullet.png");
+	//bullet.setTexture(bulletTexture);
 
 	maxSpeed = 0.f;
 }
 
 Projectile::Projectile(sf::Sprite& reference, sf::Vector2f& aimDirNorm) {
-	bulletTexture.loadFromFile("Resources/Textures/bullet.png");
-	bullet.setTexture(bulletTexture);
+	//bulletTexture.loadFromFile("Resources/Textures/bullet.png");
+	//bullet.setTexture(bulletTexture);
 	bullet.setColor(sf::Color::Yellow);
+	sf::Texture text;
+	text.create(10, 3);
+	bullet.setTexture(text);
 	bullet.scale(2.0, 1.5);
 
 	bullet.setOrigin(sf::Vector2f(bullet.getLocalBounds().width / 2, bullet.getLocalBounds().height / 2));
@@ -56,6 +59,7 @@ sf::Sprite Projectile::getBullet() {
 }
 
 void Projectile::update() {
+	checkBounds();
 	bullet.move(speed);
 }
 

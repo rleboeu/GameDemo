@@ -4,9 +4,18 @@
 #include <vector>
 
 #include "Game.h"
+#include "Menu.h"
 
 int main() {
-	Game();
+	Game game;
+	Menu menu;
+	int value = menu.start();
+
+	if (value > 0) {
+		game.initialize();
+		game.start();
+	}
+
 
 	return 0;
 }

@@ -18,6 +18,7 @@ class Enemy {
 public:
 	Enemy();
 	Enemy(sf::Vector2f);
+	Enemy(sf::Vector2f, sf::Texture&);
 	virtual ~Enemy();
 
 	sf::Sprite getSprite();

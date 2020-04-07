@@ -17,7 +17,7 @@ class Projectile
 {
 public:
 	Projectile();
-	Projectile(sf::Sprite&, sf::Vector2f&);
+	Projectile(sf::Sprite&, sf::Vector2f&, sf::Texture&);
 	~Projectile();
 
 	sf::Texture bulletTexture;

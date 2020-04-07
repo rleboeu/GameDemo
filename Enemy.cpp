@@ -11,7 +11,6 @@ Enemy::Enemy() {
 	if (enemyTexture.loadFromFile("Resources/Textures/enemyBox.png") == false) {
 		std::cout << "Failed to load Resources/Textures/enemyBox.png" << std::endl;
 	}
-
 	enemySprite.setTexture(enemyTexture);
 	enemySprite.scale(0.5, 0.5);
 	enemySprite.setOrigin(enemySprite.getLocalBounds().width / 2, enemySprite.getLocalBounds().height / 2);
@@ -27,6 +26,15 @@ Enemy::Enemy(sf::Vector2f pos) {
 	enemySprite.scale(0.5, 0.5);
 	enemySprite.setOrigin(enemySprite.getLocalBounds().width / 2, enemySprite.getLocalBounds().height / 2);
 	enemySprite.setPosition(pos);
+	maxSpeed = 1;
+}
+
+Enemy::Enemy(sf::Vector2f pos, sf::Texture& texture) {
+	enemySprite.setTexture(texture);
+	enemySprite.scale(0.5, 0.5);
+	enemySprite.setOrigin(enemySprite.getLocalBounds().width / 2, enemySprite.getLocalBounds().height / 2);
+	enemySprite.setPosition(pos);
+
 	maxSpeed = 1;
 }
 

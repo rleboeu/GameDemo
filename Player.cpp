@@ -24,6 +24,20 @@ Player::Player() {
 	isReloading = false;
 }
 
+Player::Player(sf::Texture& texture) {
+	playerSprite.setTexture(texture);
+	playerSprite.setOrigin(playerSprite.getLocalBounds().width / 2, playerSprite.getLocalBounds().height / 2);
+	playerSprite.setPosition((float)(Game::WIDTH / 2), (float)(Game::HEIGHT / 2));
+	playerSprite.scale(0.25, 0.25);
+
+	playerSpeed = 6.f;
+	shootTimer = 0;
+	timeBetweenShots = 10;
+	magazineMax = 20;
+	magazineCurrent = magazineMax;
+	isReloading = false;
+}
+
 Player::~Player() {
 	// Auto-generated destructor stub
 }
@@ -106,7 +120,7 @@ void Player::moveUp() {
 		playerSprite.move(0, -playerSpeed);
 }
 
-void Player::shoot(sf::Vector2f mousePosWindow) {
+void Player::shoot(sf::Vector2f mousePosWindow, sf::Texture& bulletTexture) {
 
 	if (magazineCurrent > 0) {
 		sf::Vector2f playerCenter = playerSprite.getPosition();
@@ -117,7 +131,7 @@ void Player::shoot(sf::Vector2f mousePosWindow) {
 			shootTimer++;
 
 		if (shootTimer >= timeBetweenShots) {
-			Projectile p(playerSprite, aimDirNorm);
+			Projectile p(playerSprite, aimDirNorm, bulletTexture);
 			playerBullets.push_back(p);
 			magazineCurrent--;
 			shootTimer = 0;

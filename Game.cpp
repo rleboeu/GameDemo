@@ -24,15 +24,22 @@ Game::~Game() {
 void Game::initialize() {
 	window.setFramerateLimit(60);
 	window.setPosition(sf::Vector2i( (sf::VideoMode::getDesktopMode().width - Game::WIDTH) / 2, (sf::VideoMode::getDesktopMode().height - Game::HEIGHT) / 2));
+
 	font.loadFromFile("Resources/Fonts/LiberationSans-Regular.ttf");
 	title.setFont(font);
 	title.setString("boxxxy");
 	title.setPosition(window.getSize().x / 2 - title.getGlobalBounds().width / 2, 0);
+
 	magazine.setFont(font);
 	magazine.setPosition(0, window.getSize().y / 2 - magazine.getGlobalBounds().height / 2);
+
 	scoreLabel.setFont(font);
 	scoreLabel.setString(std::to_string(score));
 	scoreLabel.setPosition(0, window.getSize().y / 2 + 100);
+
+	PROJECTILE_TEXTURE.loadFromFile("Resources/Textures/bullet.png");
+	ENEMY_TEXTURE.loadFromFile("Resources/Textures/enemyBox.png");
+	PLAYER_TEXTURE.loadFromFile("Resources/Textures/box.png");
 }
 
 int Game::getScore() {
@@ -49,7 +56,7 @@ void Game::incrementScore() {
 
 void Game::start() {
 
-	Player player;
+	Player player(PLAYER_TEXTURE);
 	std::vector<Enemy> enemies;
 	int enemySpawnTimer = 0;
 	int enemySpawnLimit = 100;
@@ -93,7 +100,7 @@ void Game::start() {
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player.isReloading == false) {
-			player.shoot(sf::Vector2f(sf::Mouse::getPosition(window)));
+			player.shoot(sf::Vector2f(sf::Mouse::getPosition(window)), PROJECTILE_TEXTURE);
 		}
 
 		// update
@@ -106,8 +113,6 @@ void Game::start() {
 
 		if (reloadCount == 0) {
 			player.isReloading = false;
-			player.reload();
-			reloadCount = reloadTime;
 		}
 
 		magazine.setString(player.getMagazineReport());
@@ -120,7 +125,7 @@ void Game::start() {
 			enemySpawnTimer++;
 
 		if (enemySpawnTimer >= enemySpawnLimit) {
-			enemies.push_back(Enemy(sf::Vector2f((rand() % int(window.getSize().x - 100)), (rand() % int(window.getSize().y - 100)))));
+			enemies.push_back(Enemy(sf::Vector2f((rand() % int(window.getSize().x - 100)), (rand() % int(window.getSize().y - 100))), ENEMY_TEXTURE));
 			enemySpawnTimer = 0;
 		}
 

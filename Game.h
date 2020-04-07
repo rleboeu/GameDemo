@@ -28,6 +28,11 @@ public:
 	static const unsigned int WIDTH = 1280;
 	static const unsigned int HEIGHT = 720;
 
+	sf::Texture PROJECTILE_TEXTURE;
+	sf::Texture PLAYER_TEXTURE;
+	sf::Texture ENEMY_TEXTURE;
+
+
 private:
 
 	static sf::RenderWindow window;

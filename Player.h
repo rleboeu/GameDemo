@@ -11,14 +11,13 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <vector>
-//#include <ctime>
-//#include <cstdlib>
 
 #include "Projectile.h"
 
 class Player {
 public:
 	Player();
+	Player(sf::Texture&);
 	virtual ~Player();
 
 	bool isReloading;
@@ -39,7 +38,7 @@ public:
 	void moveUp();
 	void moveDown();
 
-	void shoot(sf::Vector2f);
+	void shoot(sf::Vector2f, sf::Texture&);
 	void reload();
 
 	void update();

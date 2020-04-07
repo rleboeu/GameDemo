@@ -62,11 +62,6 @@ void Game::start() {
 	int enemySpawnLimit = 100;
 	int limitAdjustedAt = 0;
 
-	int reloadTime = 80;
-	int reloadCount = reloadTime;
-
-	bool enablePunchThrough = false;
-
 	while (window.isOpen()) {
 		// logic
 		sf::Event event;
@@ -95,27 +90,18 @@ void Game::start() {
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-			if (player.isReloading == false)
-				player.isReloading = true;
+			if (player.getEquippedWeapon().isBeingReloaded() == false)
+				player.getEquippedWeapon().reload();
 		}
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player.isReloading == false) {
-			player.shoot(sf::Vector2f(sf::Mouse::getPosition(window)), PROJECTILE_TEXTURE);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player.getEquippedWeapon().isBeingReloaded() == false) {
+			player.getEquippedWeapon().fire(sf::Vector2f(sf::Mouse::getPosition(window)), player.getPlayerSprite(), PROJECTILE_TEXTURE);
 		}
 
-		// update
-		window.clear();
+		///  PLAYER
+		player.getEquippedWeapon().tickReload();
 
-			/// PLAYER
-		if (player.isReloading) {
-			reloadCount--;
-		}
-
-		if (reloadCount == 0) {
-			player.isReloading = false;
-		}
-
-		magazine.setString(player.getMagazineReport());
+		magazine.setString(player.getEquippedWeapon().getMagazineReport());
 
 		player.followMouseTo(sf::Vector2f(sf::Mouse::getPosition(window)));
 		player.update();
@@ -134,12 +120,11 @@ void Game::start() {
 			enemies.at(i).update();
 		}
 
-			/// COLLISION
-		for (size_t i = 0; i < player.getPlayerBullets().size(); i++) {
+		/// COLLISION
+		for (size_t i = 0; i < player.getEquippedWeapon().activeBullets.size(); i++) {
 			for (size_t k = 0; k < enemies.size(); k++) {
-				if (player.getPlayerBullets().at(i).getBullet().getGlobalBounds().intersects(enemies.at(k).getSprite().getGlobalBounds())) {
-					if (!enablePunchThrough)
-						player.deleteBulletAt(i);
+				if (player.getEquippedWeapon().activeBullets.at(i).getBullet().getGlobalBounds().intersects(enemies.at(k).getSprite().getGlobalBounds())) {
+					player.getEquippedWeapon().activeBullets.erase(player.getEquippedWeapon().activeBullets.begin() + i);
 					enemies.erase(enemies.begin() + k);
 					score++;
 					scoreLabel.setString(std::to_string(score));
@@ -148,26 +133,21 @@ void Game::start() {
 			}
 		}
 
+
+		/// SCALING MODIFIERS
 		if (score % 10 == 0 && limitAdjustedAt != score && score < 200) {
 			enemySpawnLimit -= enemySpawnLimit / 10;
-
-			if (reloadTime > 20)
-				reloadTime -= reloadTime / 4;
 
 			limitAdjustedAt = score;
 		}
 
-		if (score == 100 && enablePunchThrough == false) {
-			enablePunchThrough = true;
-		}
-
 		// draw
-
+		window.clear();
 		window.draw(title);
 		window.draw(magazine);
 		window.draw(scoreLabel);
 
-		for (Projectile p : player.getPlayerBullets()) {
+		for (Projectile p : player.getEquippedWeapon().activeBullets) {
 			window.draw(p.getBullet());
 		}
 
@@ -181,3 +161,6 @@ void Game::start() {
 		window.display();
 	}
 }
+
+
+

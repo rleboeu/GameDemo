@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../Menu.cpp \
 ../Player.cpp \
 ../Projectile.cpp \
+../Weapon.cpp \
 ../main.cpp 
 
 OBJS += \
@@ -17,6 +18,7 @@ OBJS += \
 ./Menu.o \
 ./Player.o \
 ./Projectile.o \
+./Weapon.o \
 ./main.o 
 
 CPP_DEPS += \
@@ -25,6 +27,7 @@ CPP_DEPS += \
 ./Menu.d \
 ./Player.d \
 ./Projectile.d \
+./Weapon.d \
 ./main.d 
 
 

@@ -1,4 +1,5 @@
-Enemy.o: ../Enemy.cpp ../Enemy.h ../Player.h ../Projectile.h ../Game.h
+Enemy.o: ../Enemy.cpp ../Enemy.h ../Player.h ../Projectile.h ../Game.h \
+ ../Weapon.h
 
 ../Enemy.h:
 
@@ -7,3 +8,5 @@ Enemy.o: ../Enemy.cpp ../Enemy.h ../Player.h ../Projectile.h ../Game.h
 ../Projectile.h:
 
 ../Game.h:
+
+../Weapon.h:

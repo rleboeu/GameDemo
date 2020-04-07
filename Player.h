@@ -13,14 +13,16 @@
 #include <vector>
 
 #include "Projectile.h"
+#include "Weapon.h"
 
 class Player {
+
+	Weapon equippedWeapon;
+
 public:
 	Player();
 	Player(sf::Texture&);
 	virtual ~Player();
-
-	bool isReloading;
 
 	sf::Sprite& getPlayerSprite();
 	float getPlayerSpeed();
@@ -28,7 +30,9 @@ public:
 	std::string getMagazineReport();
 	int getCurrentMagazine();
 
-	bool isPlayerReloading();
+	Weapon& getEquippedWeapon();
+
+	bool playerReloading();
 
 	void deleteBulletAt(int);
 
@@ -37,6 +41,9 @@ public:
 	void moveRight();
 	void moveUp();
 	void moveDown();
+	void setReloading(bool);
+
+	void equipWeapon(Weapon);
 
 	void shoot(sf::Vector2f, sf::Texture&);
 	void reload();
@@ -54,8 +61,11 @@ private:
 	int timeBetweenShots;
 	int magazineMax;
 	int magazineCurrent;
+	bool isReloading;
 
 	float playerSpeed;
+
+
 };
 
 #endif /* PLAYER_H_ */

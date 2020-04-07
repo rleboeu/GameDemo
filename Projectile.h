@@ -20,8 +20,6 @@ public:
 	Projectile(sf::Sprite&, sf::Vector2f&, sf::Texture&);
 	~Projectile();
 
-	sf::Texture bulletTexture;
-
 	sf::Vector2f speed;
 	float maxSpeed;
 

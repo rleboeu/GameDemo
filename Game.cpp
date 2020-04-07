@@ -8,7 +8,6 @@
 #include "Game.h"
 #include "Player.h"
 #include "Enemy.h"
-#include <thread>
 
 sf::RenderWindow Game::window(sf::VideoMode(Game::WIDTH, Game::HEIGHT), "boxxxy", sf::Style::Titlebar | sf::Style::Close);
 

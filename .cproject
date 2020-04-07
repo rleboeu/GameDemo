@@ -76,8 +76,6 @@
                                     <listOptionValue builtIn="false" value="sfml-window"/>
                                     									
                                     <listOptionValue builtIn="false" value="sfml-system"/>
-                                    									
-                                    <listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="pthread"/>
                                     								
                                 </option>
                                 								

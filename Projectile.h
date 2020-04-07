@@ -21,15 +21,17 @@ public:
 	~Projectile();
 
 	sf::Vector2f speed;
-	float maxSpeed;
 
 	void setMaxSpeed(float);
+	float getMaxSpeed();
+
 	bool checkBounds();
 	sf::Sprite getBullet();
 	void update();
 
 private:
 	sf::Sprite bullet;
+	float maxSpeed;
 
 };
 

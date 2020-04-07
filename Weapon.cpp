@@ -18,13 +18,20 @@ Weapon::Weapon() {
 	isReloading = false;
 }
 
+Weapon::Weapon(int magSize, int fireRate, int reloadTime) {
+	magazineCapacity = magSize;
+	magazineCurrent = magazineCapacity;
+	rateOfFire = fireRate;
+	shootTimer = rateOfFire;
+
+	reloadSpeed = reloadTime;
+	reloadTimer = reloadSpeed;
+
+	isReloading = false;
+}
+
 Weapon& Weapon::operator=(Weapon* wep) {
 	Weapon* temp = wep;
-
-//	temp->setMagazineCapacity(20);
-//	temp->setRateOfFire(5);
-//	temp->setReloadSpeed(70);
-//	temp->isReloading = false;
 
 	temp->magazineCapacity = 20;
 	temp->magazineCurrent = magazineCapacity;
@@ -63,7 +70,8 @@ void Weapon::fire(sf::Vector2f mousePosWindow, sf::Sprite& player, sf::Texture& 
 }
 
 void Weapon::reload() {
-	isReloading = true;
+	if (isReloading == false)
+		isReloading = true;
 }
 
 void Weapon::tickReload() {
@@ -78,52 +86,18 @@ void Weapon::tickReload() {
 	}
 }
 
-void Weapon::setMagazineCapacity(int x) {
-	magazineCapacity = x;
-	magazineCurrent = magazineCapacity;
-}
-
-void Weapon::setRateOfFire(int x) {
-	rateOfFire = x;
-	shootTimer = rateOfFire;
-}
-
-void Weapon::setReloadSpeed(int x) {
-	reloadSpeed = x;
-	reloadTimer = reloadSpeed;
-}
-
-void Weapon::setMagazineCurrent(int x) {
-	magazineCurrent = x;
-}
-
-
-
-int Weapon::getMagazineCapacity() {
-	return magazineCapacity;
-}
-int Weapon::getMagazineCurrent() {
-	return magazineCurrent;
+void Weapon::removeTrespassingBullets() {
+	for (size_t i = 0; i < activeBullets.size(); i++) {
+		if (activeBullets.at(i).checkBounds() == false) {
+			activeBullets.erase(activeBullets.begin() + i);
+		} else {
+			activeBullets.at(i).update();
+		}
+	}
 }
 
 std::string Weapon::getMagazineReport() {
 	return std::to_string(magazineCurrent) + " / " + std::to_string(magazineCapacity);
-}
-
-int Weapon::getShootTimer() {
-	return shootTimer;
-}
-
-int Weapon::getRateOfFire() {
-	return rateOfFire;
-
-}
-int Weapon::getReloadSpeed() {
-	return reloadSpeed;
-}
-
-int Weapon::getReloadTimer() {
-	return reloadTimer;
 }
 
 bool Weapon::isBeingReloaded() {

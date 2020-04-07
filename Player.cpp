@@ -17,11 +17,6 @@ Player::Player() {
 	playerSprite.scale(0.25, 0.25);
 
 	playerSpeed = 6.f;
-	shootTimer = 0;
-	timeBetweenShots = 10;
-	magazineMax = 20;
-	magazineCurrent = magazineMax;
-	isReloading = false;
 
 	equippedWeapon = new Weapon();
 }
@@ -33,11 +28,6 @@ Player::Player(sf::Texture& texture) {
 	playerSprite.scale(0.25, 0.25);
 
 	playerSpeed = 6.f;
-	shootTimer = 0;
-	timeBetweenShots = 10;
-	magazineMax = 20;
-	magazineCurrent = magazineMax;
-	isReloading = false;
 
 	equippedWeapon = new Weapon();
 }
@@ -54,28 +44,8 @@ float Player::getPlayerSpeed() {
 	return playerSpeed;
 }
 
-std::vector<Projectile> Player::getPlayerBullets() {
-	return playerBullets;
-}
-
-void Player::deleteBulletAt(int i) {
-	playerBullets.erase(playerBullets.begin() + i);
-}
-
-std::string Player::getMagazineReport() {
-	return std::to_string(magazineCurrent) + " / " + std::to_string(magazineMax);
-}
-
-int Player::getCurrentMagazine() {
-	return magazineCurrent;
-}
-
 Weapon& Player::getEquippedWeapon() {
 	return equippedWeapon;
-}
-
-bool Player::playerReloading() {
-	return isReloading;
 }
 
 void Player::followMouseTo(sf::Vector2f mousePos) {
@@ -128,60 +98,13 @@ void Player::moveUp() {
 		playerSprite.move(0, -playerSpeed);
 }
 
-void Player::setReloading(bool b) {
-	isReloading = b;
-}
-
 void Player::equipWeapon(Weapon weapon) {
 	equippedWeapon = weapon;
 }
 
-void Player::shoot(sf::Vector2f mousePosWindow, sf::Texture& bulletTexture) {
-
-//	if (magazineCurrent > 0) {
-//		sf::Vector2f playerCenter = playerSprite.getPosition();
-//		sf::Vector2f aimDir = mousePosWindow - playerCenter;
-//		sf::Vector2f aimDirNorm = aimDir / (float)(std::sqrt(std::pow(aimDir.x, 2) + std::pow(aimDir.y, 2)));
-//
-//		if (shootTimer < timeBetweenShots)
-//			shootTimer++;
-//
-//		if (shootTimer >= timeBetweenShots) {
-//			Projectile p(playerSprite, aimDirNorm, bulletTexture);
-//			playerBullets.push_back(p);
-//			magazineCurrent--;
-//			shootTimer = 0;
-//		}
-//	} else {
-//		isReloading = true;
-//	}
-
-	equippedWeapon.fire(mousePosWindow, playerSprite, bulletTexture);
-
-}
-
-void Player::reload() {
-	magazineCurrent = magazineMax;
-	isReloading = false;
-}
-
 void Player::update() {
-
-	// DESTROY UNUSED BULLETS AND UPDATE BULLETS STILL TRAVELLING
-//	for (size_t i = 0; i < playerBullets.size(); i++) {
-//		if (playerBullets.at(i).checkBounds() == false) {
-//			playerBullets.erase(playerBullets.begin() + i);
-//		} else {
-//			playerBullets.at(i).update();
-//		}
-//	}
-	for (size_t i = 0; i < equippedWeapon.activeBullets.size(); i++) {
-			if (equippedWeapon.activeBullets.at(i).checkBounds() == false) {
-				equippedWeapon.activeBullets.erase(equippedWeapon.activeBullets.begin() + i);
-			} else {
-				equippedWeapon.activeBullets.at(i).update();
-			}
-		}
+	equippedWeapon.tickReload();
+	equippedWeapon.removeTrespassingBullets();
 }
 
 

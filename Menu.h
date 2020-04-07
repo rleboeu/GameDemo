@@ -22,7 +22,6 @@ public:
 	static const unsigned int HEIGHT = 720;
 
 private:
-	int pick();
 	sf::Font font;
 	sf::Text title;
 

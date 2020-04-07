@@ -26,46 +26,24 @@ public:
 
 	sf::Sprite& getPlayerSprite();
 	float getPlayerSpeed();
-	std::vector<Projectile> getPlayerBullets();
-	std::string getMagazineReport();
-	int getCurrentMagazine();
 
 	Weapon& getEquippedWeapon();
-
-	bool playerReloading();
-
-	void deleteBulletAt(int);
 
 	void followMouseTo(sf::Vector2f);
 	void moveLeft();
 	void moveRight();
 	void moveUp();
 	void moveDown();
-	void setReloading(bool);
 
 	void equipWeapon(Weapon);
 
-	void shoot(sf::Vector2f, sf::Texture&);
-	void reload();
-
 	void update();
-
-
 
 private:
 	sf::Sprite playerSprite;
 	sf::Texture playerTexture;
-	std::vector<Projectile> playerBullets;
-
-	int shootTimer;
-	int timeBetweenShots;
-	int magazineMax;
-	int magazineCurrent;
-	bool isReloading;
 
 	float playerSpeed;
-
-
 };
 
 #endif /* PLAYER_H_ */

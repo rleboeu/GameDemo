@@ -18,6 +18,7 @@
 class Weapon {
 public:
 	Weapon();
+	Weapon(int, int, int);
 	Weapon& operator=(Weapon*);
 	virtual ~Weapon();
 
@@ -26,21 +27,9 @@ public:
 	void fire(sf::Vector2f, sf::Sprite&, sf::Texture&);
 	void reload();
 	void tickReload();
-	void setMagazineCapacity(int);
-	void setRateOfFire(int);
-	void setReloadSpeed(int);
-	void setMagazineCurrent(int);
-
-	int getMagazineCapacity();
-	int getMagazineCurrent();
+	void removeTrespassingBullets();
 
 	std::string getMagazineReport();
-
-	int getShootTimer();
-	int getRateOfFire();
-	int getReloadSpeed();
-	int getReloadTimer();
-
 
 	bool isBeingReloaded();
 

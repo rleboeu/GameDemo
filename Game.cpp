@@ -26,9 +26,6 @@ void Game::initialize() {
 	window.setPosition(sf::Vector2i( (sf::VideoMode::getDesktopMode().width - Game::WIDTH) / 2, (sf::VideoMode::getDesktopMode().height - Game::HEIGHT) / 2));
 
 	font.loadFromFile("Resources/Fonts/LiberationSans-Regular.ttf");
-	title.setFont(font);
-	title.setString("boxxxy");
-	title.setPosition(window.getSize().x / 2 - title.getGlobalBounds().width / 2, 0);
 
 	magazine.setFont(font);
 	magazine.setPosition(0, window.getSize().y / 2 - magazine.getGlobalBounds().height / 2);
@@ -42,21 +39,9 @@ void Game::initialize() {
 	PLAYER_TEXTURE.loadFromFile("Resources/Textures/box.png");
 }
 
-int Game::getScore() {
-	return score;
-}
-
-void Game::setScore(int newScore) {
-	score = newScore;
-}
-
-void Game::incrementScore() {
-	score++;
-}
-
 void Game::start() {
 
-	Player player(PLAYER_TEXTURE);
+	Player player(PLAYER_TEXTURE); // @suppress("Ambiguous problem")
 	std::vector<Enemy> enemies;
 	int enemySpawnTimer = 0;
 	int enemySpawnLimit = 100;
@@ -90,8 +75,7 @@ void Game::start() {
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-			if (player.getEquippedWeapon().isBeingReloaded() == false)
-				player.getEquippedWeapon().reload();
+			player.getEquippedWeapon().reload();
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player.getEquippedWeapon().isBeingReloaded() == false) {
@@ -99,10 +83,6 @@ void Game::start() {
 		}
 
 		///  PLAYER
-		player.getEquippedWeapon().tickReload();
-
-		magazine.setString(player.getEquippedWeapon().getMagazineReport());
-
 		player.followMouseTo(sf::Vector2f(sf::Mouse::getPosition(window)));
 		player.update();
 
@@ -141,9 +121,12 @@ void Game::start() {
 			limitAdjustedAt = score;
 		}
 
+		///		TEXT
+		magazine.setString(player.getEquippedWeapon().getMagazineReport());
+
 		// draw
 		window.clear();
-		window.draw(title);
+
 		window.draw(magazine);
 		window.draw(scoreLabel);
 

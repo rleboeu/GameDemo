@@ -21,10 +21,6 @@ public:
 	void start();
 	void initialize();
 
-	int getScore();
-	void setScore(int);
-	void incrementScore();
-
 	static const unsigned int WIDTH = 1280;
 	static const unsigned int HEIGHT = 720;
 

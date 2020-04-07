@@ -34,6 +34,10 @@ void Projectile::setMaxSpeed(float s) {
 	speed *= maxSpeed;
 }
 
+float Projectile::getMaxSpeed() {
+	return maxSpeed;
+}
+
 bool Projectile::checkBounds() {
 	if (bullet.getPosition().x <= 0 || bullet.getPosition().y <= 0) {
 		return false;

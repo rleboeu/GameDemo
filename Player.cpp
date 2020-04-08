@@ -10,6 +10,7 @@
 
 
 Player::Player() {
+	// properties
 	playerTexture.loadFromFile("Resources/Textures/box.png");
 	playerSprite.setTexture(playerTexture);
 	playerSprite.setOrigin(playerSprite.getLocalBounds().width / 2, playerSprite.getLocalBounds().height / 2);
@@ -18,10 +19,17 @@ Player::Player() {
 
 	playerSpeed = 6.f;
 
+	// weapon
 	equippedWeapon = new Weapon();
+
+	// health
+	playerMaxHealth = 100;
+	playerHealth = playerMaxHealth;
+	isDead = false;
 }
 
 Player::Player(sf::Texture& texture) {
+	// properties
 	playerSprite.setTexture(texture);
 	playerSprite.setOrigin(playerSprite.getLocalBounds().width / 2, playerSprite.getLocalBounds().height / 2);
 	playerSprite.setPosition((float)(Game::WIDTH / 2), (float)(Game::HEIGHT / 2));
@@ -29,7 +37,13 @@ Player::Player(sf::Texture& texture) {
 
 	playerSpeed = 6.f;
 
+	// weapon
 	equippedWeapon = new Weapon();
+
+	// health
+	playerMaxHealth = 100;
+	playerHealth = playerMaxHealth;
+	isDead = false;
 }
 
 Player::~Player() {
@@ -46,6 +60,18 @@ float Player::getPlayerSpeed() {
 
 Weapon& Player::getEquippedWeapon() {
 	return equippedWeapon;
+}
+
+int Player::getCurrentHealth() {
+	return playerHealth;
+}
+
+int Player::getMaxHealth() {
+	return playerMaxHealth;
+}
+
+bool Player::getIsDead() {
+	return isDead;
 }
 
 void Player::followMouseTo(sf::Vector2f mousePos) {
@@ -100,6 +126,40 @@ void Player::moveUp() {
 
 void Player::equipWeapon(Weapon weapon) {
 	equippedWeapon = weapon;
+}
+
+void Player::setMaxHealth(int x) {
+	playerMaxHealth = x;
+}
+
+void Player::setCurrentHealth(int x) {
+	playerHealth = x;
+}
+
+void Player::isHit() {
+	if (playerHealth-1 == 0)
+		isDead = true;
+	else
+		playerHealth--;
+}
+
+void Player::isHit(int x) {
+	if (playerHealth - x <= 0)
+		isDead = true;
+	else
+		playerHealth -= x;
+}
+void Player::isHealed() {
+	if ((playerHealth+1) - playerMaxHealth >= 0)
+		playerHealth = playerMaxHealth;
+	else
+		playerHealth++;
+}
+void Player::isHealed(int x) {
+	if ((playerHealth+x) - playerMaxHealth >= 0)
+		playerHealth = playerMaxHealth;
+	else
+		playerHealth += x;
 }
 
 void Player::update() {

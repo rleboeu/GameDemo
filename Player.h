@@ -24,18 +24,31 @@ public:
 	Player(sf::Texture&);
 	virtual ~Player();
 
+	// properties
 	sf::Sprite& getPlayerSprite();
 	float getPlayerSpeed();
 
+	// weapons
 	Weapon& getEquippedWeapon();
+	void equipWeapon(Weapon);
 
+	// movement
 	void followMouseTo(sf::Vector2f);
 	void moveLeft();
 	void moveRight();
 	void moveUp();
 	void moveDown();
 
-	void equipWeapon(Weapon);
+	// health
+	int getCurrentHealth();
+	int getMaxHealth();
+	bool getIsDead();
+	void setMaxHealth(int);
+	void setCurrentHealth(int);
+	void isHit();
+	void isHit(int);
+	void isHealed();
+	void isHealed(int);
 
 	void update();
 
@@ -44,6 +57,10 @@ private:
 	sf::Texture playerTexture;
 
 	float playerSpeed;
+
+	int playerHealth;
+	int playerMaxHealth;
+	bool isDead;
 };
 
 #endif /* PLAYER_H_ */

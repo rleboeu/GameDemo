@@ -8,12 +8,12 @@
 #include "Game.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "InterfaceDisplay.h"
 
 sf::RenderWindow Game::window(sf::VideoMode(Game::WIDTH, Game::HEIGHT), "boxxxy", sf::Style::Titlebar | sf::Style::Close);
 
 Game::Game() {
 	// stub
-	score = 0;
 }
 
 Game::~Game() {
@@ -23,15 +23,6 @@ Game::~Game() {
 void Game::initialize() {
 	window.setFramerateLimit(60);
 	window.setPosition(sf::Vector2i( (sf::VideoMode::getDesktopMode().width - Game::WIDTH) / 2, (sf::VideoMode::getDesktopMode().height - Game::HEIGHT) / 2));
-
-	font.loadFromFile("Resources/Fonts/LiberationSans-Regular.ttf");
-
-	magazine.setFont(font);
-	magazine.setPosition(0, window.getSize().y / 2 - magazine.getGlobalBounds().height / 2);
-
-	scoreLabel.setFont(font);
-	scoreLabel.setString(std::to_string(score));
-	scoreLabel.setPosition(0, window.getSize().y / 2 + 100);
 
 	PROJECTILE_TEXTURE.loadFromFile("Resources/Textures/bullet.png");
 	ENEMY_TEXTURE.loadFromFile("Resources/Textures/enemyBox.png");
@@ -45,6 +36,8 @@ void Game::start() {
 	int enemySpawnTimer = 0;
 	int enemySpawnLimit = 100;
 	int limitAdjustedAt = 0;
+
+	InterfaceDisplay hud;
 
 	while (window.isOpen()) {
 		// logic
@@ -100,34 +93,40 @@ void Game::start() {
 		}
 
 		/// COLLISION
+			// projectiles and enemies
 		for (size_t i = 0; i < player.getEquippedWeapon().activeBullets.size(); i++) {
 			for (size_t k = 0; k < enemies.size(); k++) {
 				if (player.getEquippedWeapon().activeBullets.at(i).getBullet().getGlobalBounds().intersects(enemies.at(k).getSprite().getGlobalBounds())) {
 					player.getEquippedWeapon().activeBullets.erase(player.getEquippedWeapon().activeBullets.begin() + i);
 					enemies.erase(enemies.begin() + k);
-					score++;
-					scoreLabel.setString(std::to_string(score));
+					hud.incrementScore();
 					break;
 				}
 			}
 		}
 
+			// player and enemies
+		for (size_t k = 0; k < enemies.size(); k++) {
+			if (player.getPlayerSprite().getGlobalBounds().intersects(enemies.at(k).getSprite().getGlobalBounds())) {
+				player.isHit(2);
+				enemies.erase(enemies.begin() + k);
+				break;
+			}
+		}
 
 		/// SCALING MODIFIERS
-		if (score % 10 == 0 && limitAdjustedAt != score && score < 200) {
+		if (hud.getScore() % 10 == 0 && limitAdjustedAt != hud.getScore() && hud.getScore() < 200) {
 			enemySpawnLimit -= enemySpawnLimit / 10;
 
-			limitAdjustedAt = score;
+			limitAdjustedAt = hud.getScore();
 		}
 
 		///		TEXT
-		magazine.setString(player.getEquippedWeapon().getMagazineReport());
+		hud.updatePlayerMagazineReport(player.getEquippedWeapon().getMagazineReport());
+		hud.updatePlayerHealthText(player.getCurrentHealth());
 
 		// draw
 		window.clear();
-
-		window.draw(magazine);
-		window.draw(scoreLabel);
 
 		for (Projectile p : player.getEquippedWeapon().activeBullets) {
 			window.draw(p.getBullet());
@@ -138,6 +137,10 @@ void Game::start() {
 		for (Enemy e : enemies) {
 			window.draw(e.getSprite());
 		}
+
+		window.draw(hud.getPlayerMagazineReportText());
+		window.draw(hud.getScoreText());
+		window.draw(hud.getPlayerHealthText());
 
 		// display
 		window.display();

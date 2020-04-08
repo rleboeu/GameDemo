@@ -32,11 +32,6 @@ public:
 private:
 
 	static sf::RenderWindow window;
-	sf::Font font;
-	sf::Text title;
-	sf::Text magazine;
-	int score;
-	sf::Text scoreLabel;
 };
 
 #endif /* GAME_H_ */

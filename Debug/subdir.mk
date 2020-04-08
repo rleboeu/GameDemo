@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../Enemy.cpp \
 ../Game.cpp \
+../InterfaceDisplay.cpp \
 ../Menu.cpp \
 ../Player.cpp \
 ../Projectile.cpp \
@@ -15,6 +16,7 @@ CPP_SRCS += \
 OBJS += \
 ./Enemy.o \
 ./Game.o \
+./InterfaceDisplay.o \
 ./Menu.o \
 ./Player.o \
 ./Projectile.o \
@@ -24,6 +26,7 @@ OBJS += \
 CPP_DEPS += \
 ./Enemy.d \
 ./Game.d \
+./InterfaceDisplay.d \
 ./Menu.d \
 ./Player.d \
 ./Projectile.d \
